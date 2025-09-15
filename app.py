@@ -24,6 +24,12 @@ def api_items():
     items = load_gallery_data()
     return jsonify(items)
 
+@app.route('/test')
+def test():
+    """Test version without external dependencies"""
+    items = load_gallery_data()
+    return render_template('test.html', items=items)
+
 @app.route('/ekle')
 def add_item():
     """Placeholder route for adding new items"""
