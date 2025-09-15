@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9 Fen A - Galeri</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Material Symbols Outlined -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <!-- Tailwind CSS with plugins -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'jakarta': ['Plus Jakarta Sans', 'sans-serif'],
+                        'noto': ['Noto Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#13a4ec',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root {
+            --primary-color: #13a4ec;
+        }
+        
+        .gallery-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        
+        .gallery-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .gradient-overlay {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-noto">
+    <!-- Top App Bar -->
+    <header class="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Left spacer -->
+                <div class="w-10"></div>
+                
+                <!-- Center title -->
+                <h1 class="text-xl font-jakarta font-bold text-gray-900">9 Fen A</h1>
+                
+                <!-- Right action button -->
+                <button class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center hover:bg-blue-600 transition-colors duration-200" 
+                        onclick="window.location.href='/ekle'"
+                        aria-label="Yeni öğe ekle">
+                    <span class="material-symbols-outlined">add</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-24">
+        <!-- Gallery Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {% for item in items %}
+            <div class="gallery-card relative aspect-square rounded-lg overflow-hidden cursor-pointer">
+                <img src="{{ item.image_url }}" 
+                     alt="{{ item.title }} - {{ item.author }}"
+                     class="w-full h-full object-cover">
+                
+                <!-- Gradient overlay with text -->
+                <div class="absolute inset-0 gradient-overlay flex flex-col justify-end p-3">
+                    <h3 class="text-white font-jakarta font-semibold text-sm leading-tight mb-1">
+                        {{ item.title }}
+                    </h3>
+                    <p class="text-gray-200 text-xs">
+                        {{ item.author }}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if not items %}
+        <div class="text-center py-12">
+            <p class="text-gray-500 text-lg">Henüz galeri öğesi bulunmuyor.</p>
+        </div>
+        {% endif %}
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-around items-center h-16">
+                <!-- Galeri (Active) -->
+                <button class="flex flex-col items-center space-y-1 text-primary" aria-label="Galeri">
+                    <span class="material-symbols-outlined text-2xl">photo_library</span>
+                    <span class="text-xs font-medium">Galeri</span>
+                </button>
+                
+                <!-- Paylaş -->
+                <button class="flex flex-col items-center space-y-1 text-gray-400 hover:text-gray-600 transition-colors duration-200" aria-label="Paylaş">
+                    <span class="material-symbols-outlined text-2xl">share</span>
+                    <span class="text-xs">Paylaş</span>
+                </button>
+                
+                <!-- Profil -->
+                <button class="flex flex-col items-center space-y-1 text-gray-400 hover:text-gray-600 transition-colors duration-200" aria-label="Profil">
+                    <span class="material-symbols-outlined text-2xl">person</span>
+                    <span class="text-xs">Profil</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

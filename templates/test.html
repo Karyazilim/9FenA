@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9 Fen A - Galeri (Test)</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f9fafb;
+            line-height: 1.5;
+        }
+        
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .header-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        
+        .header h1 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #111827;
+        }
+        
+        .add-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #13a4ec;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: background-color 0.2s;
+        }
+        
+        .add-btn:hover {
+            background: #0284c7;
+        }
+        
+        /* Main content */
+        .main {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem 6rem;
+        }
+        
+        /* Gallery grid */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .gallery {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .gallery {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        .gallery-card {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        
+        .gallery-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .gallery-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #e5e7eb;
+        }
+        
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 12px;
+        }
+        
+        .card-title {
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            line-height: 1.25;
+            margin-bottom: 4px;
+        }
+        
+        .card-author {
+            color: #e5e7eb;
+            font-size: 0.75rem;
+        }
+        
+        /* Bottom navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            z-index: 50;
+        }
+        
+        .nav-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 64px;
+        }
+        
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .nav-btn.active {
+            color: #13a4ec;
+        }
+        
+        .nav-btn:not(.active) {
+            color: #9ca3af;
+        }
+        
+        .nav-btn:not(.active):hover {
+            color: #6b7280;
+        }
+        
+        .nav-icon {
+            font-size: 24px;
+        }
+        
+        .nav-text {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem 0;
+            color: #6b7280;
+            font-size: 1.125rem;
+        }
+        
+        /* Placeholder for missing images */
+        .img-placeholder {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top App Bar -->
+    <header class="header">
+        <div class="header-content">
+            <!-- Left spacer -->
+            <div style="width: 40px;"></div>
+            
+            <!-- Center title -->
+            <h1>9 Fen A</h1>
+            
+            <!-- Right action button -->
+            <button class="add-btn" onclick="window.location.href='/ekle'" aria-label="Yeni öğe ekle">
+                +
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Gallery Grid -->
+        <div class="gallery">
+            {% for item in items %}
+            <div class="gallery-card">
+                <div class="img-placeholder">{{ loop.index }}</div>
+                
+                <!-- Gradient overlay with text -->
+                <div class="card-overlay">
+                    <h3 class="card-title">{{ item.title }}</h3>
+                    <p class="card-author">{{ item.author }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if not items %}
+        <div class="empty-state">
+            <p>Henüz galeri öğesi bulunmuyor.</p>
+        </div>
+        {% endif %}
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-content">
+            <!-- Galeri (Active) -->
+            <button class="nav-btn active" aria-label="Galeri">
+                <div class="nav-icon">📷</div>
+                <span class="nav-text">Galeri</span>
+            </button>
+            
+            <!-- Paylaş -->
+            <button class="nav-btn" aria-label="Paylaş">
+                <div class="nav-icon">📤</div>
+                <span class="nav-text">Paylaş</span>
+            </button>
+            
+            <!-- Profil -->
+            <button class="nav-btn" aria-label="Profil">
+                <div class="nav-icon">👤</div>
+                <span class="nav-text">Profil</span>
+            </button>
+        </div>
+    </nav>
+</body>
+</html>
